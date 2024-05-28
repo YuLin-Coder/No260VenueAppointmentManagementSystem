@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dao.ContactDao">
+	<resultMap id="BaseResultMap" type="project.model.Contact">
+		<id column="customerId" property="customerId"/>
+		<id column="phone" property="phone"/>
+		<id column="content" property="content"/>
+		<id column="insertDate" property="insertDate"/>
+	</resultMap>
+	
+	<insert id="insert">
+		insert into t_contact(customerId,phone,content,insertDate) values(#{customerId},#{phone},#{content},#{insertDate})
+	</insert>
+	
+	<update id="update">
+	 update t_contact
+	 <trim prefix="set" suffixOverrides=",">
+	  <if test="customerId!=null">customerId=#{customerId},</if>
+	  <if test="phone!=null">phone=#{phone},</if>
+	  <if test="content!=null">content=#{content},</if>
+	  <if test="insertDate!=null">insertDate=#{insertDate},</if>
+	 </trim>
+	 where id=#{id}
+	</update>
+	<select id="getById" resultMap="BaseResultMap"
+		parameterType="project.model.Contact">
+		select * from t_contact where id=#{id}
+	</select>
+	
+	<delete id="delete">  
+        delete from t_contact where id=#{id}
+	</delete>
+	<select id="queryForList" resultMap="BaseResultMap" parameterType="project.model.Contact">
+		select * from t_contact where 1=1 
+		<if test="begin!=null and page_num!=null">limit #{begin},#{page_num}</if>
+	</select>
+	<select id="countAll" resultType="java.lang.Integer" parameterType="project.model.Contact">
+		select count(1) from t_contact where 1=1 
+	</select>
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dao.Book2Dao">
+	<resultMap id="BaseResultMap" type="project.model.Book2">
+		<id column="id" property="id"/>
+		<result column="bookName" property="bookName"/>
+		<result column="price" property="price"/>
+		<result column="num" property="num"/>
+		<result column="allfee" property="allfee"/>
+		<result column="VALSS" property="VALSS"/>
+		<result column="insertDate" property="insertDate"/>
+	</resultMap>
+	
+	<insert id="insert">
+		insert into t_book(bookname,insertDate,price,num,allfee,valss) values(#{bookName},#{insertDate},#{price},#{num},#{allfee},#{VALSS})
+	</insert>
+	<update id="update">
+	 update t_book
+	 <trim prefix="set" suffixOverrides=",">
+	  <if test="bookName!=null">bookName=#{bookName},</if>
+	  <if test="price!=null">price=#{price},</if>
+	  <if test="num!=null">num=#{num},</if>
+	  <if test="insertDate!=null">insertDate=#{insertDate},</if>
+	  <if test="allfee!=null">allfee=#{allfee},</if>
+	  <if test="VALSS!=null">VALSS=#{VALSS},</if>
+	 </trim>
+	 where id=#{id}
+	</update>
+	<select id="getById" resultMap="BaseResultMap"
+		parameterType="project.model.Book2">
+		select * from t_book where id=#{id}
+	</select>
+	<delete id="delete">  
+        delete from t_book where id=#{id}
+	</delete>
+	<select id="queryForList" resultMap="BaseResultMap" parameterType="project.model.Book2">
+		select top (#{page_num}) * from (select row_number() over (order by id) AS rownumber ,* 
+		from (select * from t_book where 1=1 
+		<if test="bookName!=null">
+		    and bookName like concat(concat('%',#{bookName}),'%') 
+		</if>
+		)a) A where rownumber>#{begin};
+	</select>
+	
+	
+	
+	
+	<select id="countAll" resultType="java.lang.Integer" parameterType="project.model.Book2">
+		select count(1) from t_book where 1=1 
+		<if test="bookName!=null">
+		    and bookName like concat(concat('%',#{bookName}),'%') 
+		</if>
+	</select>
+	
+	
+	
+</mapper>

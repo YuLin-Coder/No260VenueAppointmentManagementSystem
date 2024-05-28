@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dao.ProductlistDao">
+	<resultMap id="BaseResultMap" type="project.model.Productlist">
+		<id column="productId" property="productId"/>
+		<id column="orderDate" property="orderDate"/>
+		<id column="zc" property="zc"/>
+		<id column="sjd" property="sjd"/>
+		<id column="status" property="status"/>
+		<id column="customerId" property="customerId"/>
+		<id column="insertDate" property="insertDate"/>
+		<id column="fee" property="fee"/>
+		<id column="orderNum" property="orderNum"/>
+		<id column="productName" property="productName"/>
+	</resultMap>
+	
+	<insert id="insert">
+		insert into t_productlist(productId,orderDate,zc,sjd,status,customerId,insertDate,fee,orderNum,productName) values(#{productId},#{orderDate},#{zc},#{sjd},#{status},#{customerId},#{insertDate},#{fee},#{orderNum},#{productName})
+	</insert>
+	
+	<update id="update">
+	 update t_productlist
+	 <trim prefix="set" suffixOverrides=",">
+	  <if test="productId!=null">productId=#{productId},</if>
+	  <if test="orderDate!=null">orderDate=#{orderDate},</if>
+	  <if test="zc!=null">zc=#{zc},</if>
+	  <if test="sjd!=null">sjd=#{sjd},</if>
+	  <if test="status!=null">status=#{status},</if>
+	  <if test="customerId!=null">customerId=#{customerId},</if>
+	  <if test="insertDate!=null">insertDate=#{insertDate},</if>
+	  <if test="fee!=null">fee=#{fee},</if>
+	  <if test="orderNum!=null">orderNum=#{orderNum},</if>
+	  <if test="productName!=null">productName=#{productName},</if>
+	 </trim>
+	 where id=#{id} 
+	</update>
+	<select id="getById" resultMap="BaseResultMap"
+		parameterType="project.model.Productlist">
+		select * from t_productlist where id=#{id}
+	</select>
+	
+	<delete id="delete">  
+        delete from t_productlist where id=#{id}
+	</delete>
+	<select id="queryForList" resultMap="BaseResultMap" parameterType="project.model.Productlist">
+		select * from t_productlist where 1=1 and status in('预定中','完成')
+		<if test="orderDate!=null and orderDate!=''">
+		    and orderDate like concat(concat('%',#{orderDate}),'%') 
+		</if>
+		<if test="zc!=null and zc!=''">
+		    and zc like concat(concat('%',#{zc}),'%') 
+		</if>
+		<if test="sjd!=null and sjd!=''">
+		    and sjd like concat(concat('%',#{sjd}),'%') 
+		</if>
+		<if test="status!=null and status!=''">
+		    and status like concat(concat('%',#{status}),'%') 
+		</if>
+		<if test="orderNum!=null and orderNum!=''">
+		    and orderNum like concat(concat('%',#{orderNum}),'%') 
+		</if>
+		<if test="productName!=null and productName!=''">
+		    and productName like concat(concat('%',#{productName}),'%') 
+		</if>
+		<if test="begin!=null and page_num!=null">limit #{begin},#{page_num}</if>  
+		
+		
+	</select>
+	<select id="countAll" resultType="java.lang.Integer" parameterType="project.model.Productlist">
+		select count(1) from t_productlist where 1=1 and status in('预定中','完成')
+		<if test="orderDate!=null">
+		    and orderDate like concat(concat('%',#{orderDate}),'%') 
+		</if>
+		<if test="zc!=null">
+		    and zc like concat(concat('%',#{zc}),'%') 
+		</if>
+		<if test="sjd!=null">
+		    and sjd like concat(concat('%',#{sjd}),'%') 
+		</if>
+		<if test="status!=null">
+		    and status like concat(concat('%',#{status}),'%') 
+		</if>
+		<if test="orderNum!=null">
+		    and orderNum like concat(concat('%',#{orderNum}),'%') 
+		</if>
+		<if test="productName!=null">
+		    and productName like concat(concat('%',#{productName}),'%') 
+		</if>
+	</select>
+</mapper>

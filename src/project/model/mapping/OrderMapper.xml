@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dao.OrderDao">
+	<resultMap id="BaseResultMap" type="project.model.Order">
+		<id column="customerId" property="customerId"/>
+		<id column="productDetail" property="productDetail"/>
+		<id column="allPrice" property="allPrice"/>
+		<id column="status" property="status"/>
+		<id column="orderNum" property="orderNum"/>
+		<id column="pl" property="pl"/>
+		<id column="insertDate" property="insertDate"/>
+		<id column="userId" property="userId"/>
+		<id column="orderDate" property="orderDate"/>
+	</resultMap>
+	
+	<insert id="insert">
+		insert into t_order(customerId,productDetail,allPrice,status,orderNum,pl,insertDate,userId,orderDate) values(#{customerId},#{productDetail},#{allPrice},#{status},#{orderNum},#{pl},#{insertDate},#{userId},#{orderDate})
+	</insert>
+	
+	<update id="update">
+	 update t_order
+	 <trim prefix="set" suffixOverrides=",">
+	  <if test="customerId!=null">customerId=#{customerId},</if>
+	  <if test="productDetail!=null">productDetail=#{productDetail},</if>
+	  <if test="allPrice!=null">allPrice=#{allPrice},</if>
+	  <if test="status!=null">status=#{status},</if>
+	  <if test="orderNum!=null">orderNum=#{orderNum},</if>
+	  <if test="pl!=null">pl=#{pl},</if>
+	  <if test="insertDate!=null">insertDate=#{insertDate},</if>
+	  <if test="userId!=null">userId=#{userId},</if>
+	  <if test="orderDate!=null">orderDate=#{orderDate},</if>
+	 </trim>
+	 where id=#{id}
+	</update>
+	<select id="getById" resultMap="BaseResultMap"
+		parameterType="project.model.Order">
+		select * from t_order where id=#{id}
+	</select>
+	
+	<delete id="delete">  
+        delete from t_order where id=#{id}
+	</delete>
+	<select id="queryForList" resultMap="BaseResultMap" parameterType="project.model.Order">
+		select * from t_order where 1=1 
+		<if test="begin!=null and page_num!=null">limit #{begin},#{page_num}</if>
+	</select>
+	<select id="countAll" resultType="java.lang.Integer" parameterType="project.model.Order">
+		select count(1) from t_order where 1=1 
+	</select>
+</mapper>

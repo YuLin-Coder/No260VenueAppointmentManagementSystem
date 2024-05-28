@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dao.ProductDao">
+	<resultMap id="BaseResultMap" type="project.model.Product">
+		<id column="productName" property="productName"/>
+		<id column="productPic1" property="productPic1"/>
+		<id column="productPic2" property="productPic2"/>
+		<id column="productPic3" property="productPic3"/>
+		<id column="productPic4" property="productPic4"/>
+		<id column="price" property="price"/>
+		<id column="oldPrice" property="oldPrice"/>
+		<id column="content" property="content"/>
+		<id column="nums" property="nums"/>
+		<id column="tjxj" property="tjxj"/>
+		<id column="status" property="status"/>
+		<id column="typesId" property="typesId"/>
+		<id column="jf" property="jf"/>
+		<id column="userId" property="userId"/>
+		<id column="bqId" property="bqId"/>
+	</resultMap>
+	
+	<insert id="insert">
+		insert into t_product(productName,productPic1,productPic2,productPic3,productPic4,price,oldPrice,content,nums,tjxj,status,typesId,jf,userId,bqId) values(#{productName},#{productPic1},#{productPic2},#{productPic3},#{productPic4},#{price},#{oldPrice},#{content},#{nums},#{tjxj},#{status},#{typesId},#{jf},#{userId},#{bqId})
+	</insert>
+	
+	<update id="update">
+	 update t_product
+	 <trim prefix="set" suffixOverrides=",">
+	  <if test="productName!=null">productName=#{productName},</if>
+	  <if test="productPic1!=null">productPic1=#{productPic1},</if>
+	  <if test="productPic2!=null">productPic2=#{productPic2},</if>
+	  <if test="productPic3!=null">productPic3=#{productPic3},</if>
+	  <if test="productPic4!=null">productPic4=#{productPic4},</if>
+	  <if test="price!=null">price=#{price},</if>
+	  <if test="oldPrice!=null">oldPrice=#{oldPrice},</if>
+	  <if test="content!=null">content=#{content},</if>
+	  <if test="nums!=null">nums=#{nums},</if>
+	  <if test="tjxj!=null">tjxj=#{tjxj},</if>
+	  <if test="status!=null">status=#{status},</if>
+	  <if test="typesId!=null">typesId=#{typesId},</if>
+	  <if test="jf!=null">jf=#{jf},</if>
+	  <if test="userId!=null">userId=#{userId},</if>
+	  <if test="bqId!=null">bqId=#{bqId},</if>
+	 </trim>
+	 where id=#{id}
+	</update>
+	<select id="getById" resultMap="BaseResultMap"
+		parameterType="project.model.Product">
+		select * from t_product where id=#{id}
+	</select>
+	
+	<delete id="delete">  
+        delete from t_product where id=#{id}
+	</delete>
+	<select id="queryForList" resultMap="BaseResultMap" parameterType="project.model.Product">
+		select * from t_product where 1=1 
+		<if test="productName!=null and productName!=''">
+		    and productName like concat(concat('%',#{productName}),'%') 
+		</if>
+		<if test="begin!=null and page_num!=null">limit #{begin},#{page_num}</if>
+	</select>
+	<select id="countAll" resultType="java.lang.Integer" parameterType="project.model.Product">
+		select count(1) from t_product where 1=1 
+		<if test="productName!=null">
+		    and productName like concat(concat('%',#{productName}),'%') 
+		</if>
+	</select>
+</mapper>

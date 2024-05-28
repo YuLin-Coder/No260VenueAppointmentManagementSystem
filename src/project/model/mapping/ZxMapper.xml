@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dao.ZxDao">
+	<resultMap id="BaseResultMap" type="project.model.Zx">
+		<id column="title" property="title"/>
+		<id column="content" property="content"/>
+		<id column="pic" property="pic"/>
+	</resultMap>
+	
+	<insert id="insert">
+		insert into t_zx(title,content,pic) values(#{title},#{content},#{pic})
+	</insert>
+	
+	<update id="update">
+	 update t_zx
+	 <trim prefix="set" suffixOverrides=",">
+	  <if test="title!=null">title=#{title},</if>
+	  <if test="content!=null">content=#{content},</if>
+	  <if test="pic!=null">pic=#{pic},</if>
+	 </trim>
+	 where id=#{id}
+	</update>
+	<select id="getById" resultMap="BaseResultMap"
+		parameterType="project.model.Zx">
+		select * from t_zx where id=#{id}
+	</select>
+	
+	<delete id="delete">  
+        delete from t_zx where id=#{id}
+	</delete>
+	<select id="queryForList" resultMap="BaseResultMap" parameterType="project.model.Zx">
+		select * from t_zx where 1=1 
+		<if test="title!=null and title!=''">
+		    and title like concat(concat('%',#{title}),'%') 
+		</if>
+		<if test="begin!=null and page_num!=null">limit #{begin},#{page_num}</if>
+	</select>
+	<select id="countAll" resultType="java.lang.Integer" parameterType="project.model.Zx">
+		select count(1) from t_zx where 1=1 
+		<if test="title!=null">
+		    and title like concat(concat('%',#{title}),'%') 
+		</if>
+	</select>
+</mapper>

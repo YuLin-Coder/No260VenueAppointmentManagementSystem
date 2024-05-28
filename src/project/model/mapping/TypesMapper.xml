@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dao.TypesDao">
+	<resultMap id="BaseResultMap" type="project.model.Types">
+		<id column="typesName" property="typesName"/>
+	</resultMap>
+	
+	<insert id="insert">
+		insert into t_types(typesName) values(#{typesName})
+	</insert>
+	
+	<update id="update">
+	 update t_types
+	 <trim prefix="set" suffixOverrides=",">
+	  <if test="typesName!=null">typesName=#{typesName},</if>
+	 </trim>
+	 where id=#{id}
+	</update>
+	<select id="getById" resultMap="BaseResultMap"
+		parameterType="project.model.Types">
+		select * from t_types where id=#{id}
+	</select>
+	
+	<delete id="delete">  
+        delete from t_types where id=#{id}
+	</delete>
+	<select id="queryForList" resultMap="BaseResultMap" parameterType="project.model.Types">
+		select * from t_types where 1=1 
+		<if test="typesName!=null and typesName!=''">
+		    and typesName like concat(concat('%',#{typesName}),'%') 
+		</if>
+		<if test="begin!=null and page_num!=null">limit #{begin},#{page_num}</if>
+	</select>
+	<select id="countAll" resultType="java.lang.Integer" parameterType="project.model.Types">
+		select count(1) from t_types where 1=1 
+		<if test="typesName!=null">
+		    and typesName like concat(concat('%',#{typesName}),'%') 
+		</if>
+	</select>
+</mapper>

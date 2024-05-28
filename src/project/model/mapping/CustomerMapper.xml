@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dao.CustomerDao">
+	<resultMap id="BaseResultMap" type="project.model.Customer">
+		<id column="username" property="username"/>
+		<id column="password" property="password"/>
+		<id column="customerName" property="customerName"/>
+		<id column="sex" property="sex"/>
+		<id column="address" property="address"/>
+		<id column="phone" property="phone"/>
+		<id column="account" property="account"/>
+		<id column="jf" property="jf"/>
+	</resultMap>
+	
+	<insert id="insert">
+		insert into t_customer(username,password,customerName,sex,address,phone,account,jf) values(#{username},#{password},#{customerName},#{sex},#{address},#{phone},#{account},#{jf})
+	</insert>
+	
+	<update id="update">
+	 update t_customer
+	 <trim prefix="set" suffixOverrides=",">
+	  <if test="username!=null">username=#{username},</if>
+	  <if test="password!=null">password=#{password},</if>
+	  <if test="customerName!=null">customerName=#{customerName},</if>
+	  <if test="sex!=null">sex=#{sex},</if>
+	  <if test="address!=null">address=#{address},</if>
+	  <if test="phone!=null">phone=#{phone},</if>
+	  <if test="account!=null">account=#{account},</if>
+	  <if test="jf!=null">jf=#{jf},</if>
+	 </trim>
+	 where id=#{id}
+	</update>
+	<select id="getById" resultMap="BaseResultMap"
+		parameterType="project.model.Customer">
+		select * from t_customer where id=#{id}
+	</select>
+	
+	<delete id="delete">  
+        delete from t_customer where id=#{id}
+	</delete>
+	<select id="queryForList" resultMap="BaseResultMap" parameterType="project.model.Customer">
+		select * from t_customer where 1=1 
+		<if test="username!=null and username!=''">
+		    and username like concat(concat('%',#{username}),'%') 
+		</if>
+		<if test="begin!=null and page_num!=null">limit #{begin},#{page_num}</if>
+	</select>
+	<select id="countAll" resultType="java.lang.Integer" parameterType="project.model.Customer">
+		select count(1) from t_customer where 1=1 
+		<if test="username!=null">
+		    and username like concat(concat('%',#{username}),'%') 
+		</if>
+	</select>
+</mapper>

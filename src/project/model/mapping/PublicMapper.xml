@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dao.PublicDao">
+  	
+  	<select id="queryForList" resultType="java.util.HashMap" parameterType="java.lang.String">
+    	${_parameter}
+  	</select>
+  	
+  	
+  	<select id="queryForMap" resultType="java.util.HashMap" parameterType="java.lang.String">
+    	${_parameter}
+  	</select>
+  	
+	<update id="update" parameterType="java.lang.String">
+		${_parameter}
+	</update>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dao.AdminDao">
+	<resultMap id="BaseResultMap" type="project.model.Admin">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="pId" property="pId" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="isAdminExists" resultMap="BaseResultMap"
+		parameterType="project.model.Admin">
+		select * from t_admin where username =
+		#{username,jdbcType=VARCHAR} and
+		password=#{password,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getById" resultMap="BaseResultMap"
+		parameterType="project.model.Admin">
+		select * from t_admin where
+		id=#{id,jdbcType=INTEGER}
+	</select>
+</mapper>
